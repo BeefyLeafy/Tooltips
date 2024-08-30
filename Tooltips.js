@@ -1,8 +1,10 @@
-class TooltipHelper {
+// TooltipHelper class, Take html element instead of text for tooltip content
+// Slightly modified from https://github.com/CreativeTechGuy/Tooltips
+class TooltipHelper { 
     constructor(settings) {
         settings = settings || {};
         this.settings = {
-            tooltipWidth: settings.tooltipWidth || 300,
+            tooltipWidth: settings.tooltipWidth || 180,
             tooltipHTMLTag: settings.tooltipHTMLTag || "custom-tooltip"
         };
         this.tooltipData = {
@@ -20,10 +22,10 @@ class TooltipHelper {
         });
     }
 
-    setTooltip(target, text) {
+    setTooltip(target, elem) {
         const eventListenersAdded = this.tooltipData.cache.has(target);
         this.tooltipData.cache.set(target, {
-            text: text,
+            elem: elem,
             mousemove: (evt) => {
                 if (this._getEventPath(evt).length > this.tooltipData.maxDepth) {
                     this.tooltipData.maxDepth = this._getEventPath(evt).length;
@@ -52,7 +54,7 @@ class TooltipHelper {
         if (!this._doesTooltipExist()) {
             this._createTooltipElement();
         }
-        this.tooltipElement.innerText = this.tooltipData.cache.get(target).text;
+        this.tooltipElement.innerHTML = this.tooltipData.cache.get(target).elem.outerHTML;
         window.requestAnimationFrame(() => {
             this.tooltipElement.style.opacity = "1";
             const tooltipRect = this.tooltipElement.getBoundingClientRect();
@@ -77,7 +79,7 @@ class TooltipHelper {
 
     getTooltip(target) {
         const data = this.tooltipData.cache.get(target);
-        return data ? data.text : null;
+        return data ? data.elem : null;
     }
 
     removeTooltip(target) {
@@ -138,7 +140,7 @@ class TooltipHelper {
             color: #ffffff;
             font-size: 13px;
             font-weight: normal;
-            padding: 0.5em 1em;
+            padding: 1em 1em;
             box-sizing: border-box;
             z-index: 99999999;
             font-family: monospace;

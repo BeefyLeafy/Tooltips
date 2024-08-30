@@ -21,13 +21,15 @@ If you are using this in a UserScript, copy/paste the code from [Tooltips.min.js
 ```js
 const tooltipHelper = new TooltipHelper();
 const elem = document.getElementById("target");
-tooltipHelper.setTooltip(elem, "This is the text you want to display.\n\tThis tooltip is formatted into multiple lines.");
+const tooltipElem = document.createElement("img");
+tooltipHelper.setTooltip(elem, tooltipElem);
 
-console.log(tooltipHelper.getTooltip(elem)); // Returns the tooltip text
+console.log(tooltipHelper.getTooltip(elem)); // Returns the tooltip element
 
-tooltipHelper.setTooltip(elem, "Text can be changed at any time");
+const tooltipElem2 = document.createElement("span");
+tooltipHelper.setTooltip(elem, tooltipElem2);
 
-tooltipHelper.setTooltip(document.getElementById("another-target"), "You can define as many tooltips as you'd like.");
+tooltipHelper.setTooltip(document.getElementById("another-target"), tooltipElem);
 
 tooltipHelper.removeTooltip(elem);
 ```
@@ -36,7 +38,7 @@ tooltipHelper.removeTooltip(elem);
 
 ```js
 const tooltipHelper = new TooltipHelper({
-    tooltipWidth: YOUR_WIDTH || 300,
+    tooltipWidth: YOUR_WIDTH || 180,
     tooltipHTMLTag: YOUR_CUSTOM_TAG_NAME || "custom-tooltip"
 });
 ```
